@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Population Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Settings</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <h1>World Population Dashboard</h1>
+            <input type="text" id="search" placeholder="Search by country..." onkeyup="filterCountries()">
+        </header>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Total Population</h3>
+                <p>8 Billion</p>
+            </div>
+            <div class="card">
+                <h3>Urban Population</h3>
+                <p>4.5 Billion</p>
+            </div>
+            <div class="card">
+                <h3>Growth Rate</h3>
+                <p>1.1% per year</p>
+            </div>
+        </div>
+
+        <!-- Population Chart -->
+        <div class="chart-container">
+            <canvas id="populationChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Chart Data
+        const ctx = document.getElementById('populationChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['China', 'India', 'USA', 'Indonesia', 'Pakistan'],
+                datasets: [{
+                    label: 'Population (millions)',
+                    data: [1400, 1380, 330, 273, 225],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff']
+                }]
+            }
+        });
+
+        // Search Filter
+        function filterCountries() {
+            let input = document.getElementById("search").value.toLowerCase();
+            let labels = ['China', 'India', 'USA', 'Indonesia', 'Pakistan'];
+            let data = [1400, 1380, 330, 273, 225];
+
+            let filteredLabels = labels.filter((country, index) => country.toLowerCase().includes(input));
+            let filteredData = filteredLabels.map(country => data[labels.indexOf(country)]);
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: filteredLabels,
+                    datasets: [{
+                        label: 'Population (millions)',
+                        data: filteredData,
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56', '#4bc0c0', '#9966ff']
+                    }]
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
